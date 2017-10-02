@@ -253,7 +253,7 @@ namespace Email_Payment_Advice
 
         private static void update_student(int student, DateTime now)
         {
-            string update_sql = $"Update Student set Notes = concat(Notes, '{"\n"}', '{now.ToString("MM/dd/yyyy")}: EFC email sent.') where StudentID = ({student});";
+            string update_sql = $"Update Student set Notes = concat(Notes, '{"\r\n"}', '{now.ToString("MM/dd/yyyy")}: EFC email sent.') where StudentID = ({student});";
             //            update fc5.Student set Notes = concat(Notes, '\n', '09/27/2017: EFC email sent.')
             //where StudentID in (1);
 
@@ -311,15 +311,19 @@ namespace Email_Payment_Advice
                 var from = new EmailAddress("info@ShamrocksFA.com", "Shamrocks Unlimited");
                 var subject = "Financial Aid Awarded";
                 var to = new EmailAddress(sendTo == "student" ? emailAddress : sendTo, $"{studFirst} {studLast}");
-                
                 var plainTextContent = txtBody;
                 var htmlContent = htmBody;
                 var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
 
                 // add any CCs from settings
-                foreach (var cc in CCs)
+                if (CCs.Count > 0)
                 {
-                    msg.AddCc(new EmailAddress(cc, $"{studFirst} {studLast}"));
+                    var ccList = new List<EmailAddress>();
+                    foreach (var cc in CCs)
+                    {
+                        ccList.Add(new EmailAddress(cc, $"{studFirst} {studLast}"));
+                    }
+                    msg.AddCcs(ccList);
                 }
 
                 // add BCC from settings if supplied
