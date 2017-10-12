@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Odbc;
 
-namespace Email_Payment_Advice
+namespace EmailPaymentAdvice
 {
     class ODBCClass : IDisposable
     {

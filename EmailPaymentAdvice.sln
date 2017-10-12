@@ -3,9 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Email Payment Advice", "Email Payment Advice\Email Payment Advice.csproj", "{FE96BA49-3251-4933-A78C-81230E332A84}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmailPaymentAdvice", "Email Payment Advice\EmailPaymentAdvice.csproj", "{FE96BA49-3251-4933-A78C-81230E332A84}"
+	ProjectSection(ProjectDependencies) = postProject
+		{DD399A67-668D-4E37-ADCB-6C0E9ED193AB} = {DD399A67-668D-4E37-ADCB-6C0E9ED193AB}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aimm.Logging", "Aimm.Logging\Aimm.Logging\Aimm.Logging.csproj", "{DD399A67-668D-4E37-ADCB-6C0E9ED193AB}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "EmailPaymentAdviceSetup", "EmailPaymentAdviceSetup\EmailPaymentAdviceSetup.vdproj", "{3A80F476-C874-4BFA-9813-89ADBCA2A75F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +26,9 @@ Global
 		{DD399A67-668D-4E37-ADCB-6C0E9ED193AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DD399A67-668D-4E37-ADCB-6C0E9ED193AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD399A67-668D-4E37-ADCB-6C0E9ED193AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3A80F476-C874-4BFA-9813-89ADBCA2A75F}.Debug|Any CPU.ActiveCfg = Debug
+		{3A80F476-C874-4BFA-9813-89ADBCA2A75F}.Debug|Any CPU.Build.0 = Debug
+		{3A80F476-C874-4BFA-9813-89ADBCA2A75F}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
