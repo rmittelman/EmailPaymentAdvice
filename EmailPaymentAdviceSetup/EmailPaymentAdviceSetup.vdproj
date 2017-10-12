@@ -76,12 +76,6 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C9743CFB96A87AF5E4151CA0BCED140C"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_2E74B289CBA345FCB32D6D51384BA214"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -115,6 +109,12 @@
         "OwnerKey" = "8:_639615EE6BFCCA0231DD04CCC1313FCA"
         "MsmSig" = "8:_UNDEFINED"
         }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_C9743CFB96A87AF5E4151CA0BCED140C"
+        "MsmSig" = "8:_UNDEFINED"
+        }
     }
     "Configurations"
     {
@@ -133,6 +133,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -149,6 +157,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -420,15 +436,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:EmailPaymentAdvice"
-        "ProductCode" = "8:{0531C9BE-785C-4120-ACC3-08C491EE7441}"
-        "PackageCode" = "8:{4EF63D8E-386E-42C8-B725-F524FF534C15}"
+        "ProductCode" = "8:{38EADC25-827B-4A49-84D8-CB8C46893953}"
+        "PackageCode" = "8:{4898A968-8BB7-4A00-906A-74F250790062}"
         "UpgradeCode" = "8:{5945F11B-EFE0-45F1-AAB1-537F558FBED5}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.0.5"
+        "ProductVersion" = "8:1.0.6"
         "Manufacturer" = "8:RonM"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -543,7 +559,7 @@
         {
             "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_1FE2D71CA7E34D828685A0B11899E69C"
             {
-            "Name" = "8:Send Email Advice"
+            "Name" = "8:Email Payment Advice"
             "Arguments" = "8:"
             "Description" = "8:"
             "ShowCmd" = "3:1"
@@ -551,6 +567,20 @@
             "Transitive" = "11:FALSE"
             "Target" = "8:_2E74B289CBA345FCB32D6D51384BA214"
             "Folder" = "8:_CD3B98FDD36C435CAB09FC9B7F2E8961"
+            "WorkingFolder" = "8:_43E22F4428E44B3F8EB8483D8AFC656E"
+            "Icon" = "8:"
+            "Feature" = "8:"
+            }
+            "{970C0BB2-C7D0-45D7-ABFA-7EC378858BC0}:_2089C3B12C424045A09CB4B49E7CCBD6"
+            {
+            "Name" = "8:Email Payment Advice"
+            "Arguments" = "8:"
+            "Description" = "8:"
+            "ShowCmd" = "3:1"
+            "IconIndex" = "3:0"
+            "Transitive" = "11:FALSE"
+            "Target" = "8:_2E74B289CBA345FCB32D6D51384BA214"
+            "Folder" = "8:_395633C5DA9B47879BF1FFD5D03D2225"
             "WorkingFolder" = "8:_43E22F4428E44B3F8EB8483D8AFC656E"
             "Icon" = "8:"
             "Feature" = "8:"
