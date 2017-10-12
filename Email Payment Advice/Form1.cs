@@ -77,7 +77,6 @@ namespace EmailPaymentAdvice
         {
             LogIt.LogMethod();
 
-
             apiKey = ConfigurationManager.AppSettings["SENDGRID_API_KEY"];
             sendTo = ConfigurationManager.AppSettings["SendTo"];
             var tempCCs = ConfigurationManager.AppSettings["SendCC"];
@@ -103,7 +102,7 @@ namespace EmailPaymentAdvice
                 dtpFromDate.Value = fromDate;
                 toDate = DateTime.Today.AddDays(-toDaysAgo);
                 dtpToDate.Value = toDate;
-                LogIt.LogInfo($"Got beginning and ending dates from config file: FromDate={fromDate}, ToDate={toDate}");
+                LogIt.LogInfo($"Got beginning and ending dates from config file: FromDate={fromDate.ToShortDateString()}, ToDate={toDate.ToShortDateString()}");
 
                 Schools = tempSchools.Split(',').ToList<string>();
                 CCs = tempCCs.Split(',').ToList<string>();
@@ -116,8 +115,6 @@ namespace EmailPaymentAdvice
                     allSchools.Add(row.ItemArray[0].ToString());
                 }
                 clbSchools.DataSource = allSchools;
-                //clbSchools.DisplayMember = "SchoolID";
-                //clbSchools.ValueMember = "SchoolID";
 
                 // check the items
                 for (int i = 0; i < Schools.Count; i++)
@@ -180,13 +177,17 @@ namespace EmailPaymentAdvice
                                 try
                                 {
                                     // send the email, update payments and student if successful
-                                    //Execute(apiKey, curStudentFirst, curStudentLast, curStudentEmail, curSchoolContact, curSchoolContactEmail, textBody, htmlBody).Wait();
                                     Response r = await SendEmail(apiKey, curStudentFirst, curStudentLast, curStudentEmail, curSchoolContact, curSchoolContactEmail, textBody, htmlBody);
                                     if (r.StatusCode == System.Net.HttpStatusCode.Accepted && paymentList.Count != 0)
                                     {
-                                        UpdatePayments(paymentList, DateTime.Now);
-                                        UpdateStudent(curStudentID, DateTime.Now);
                                         Status = $"Sent email for {curStudentFirst} {curStudentLast}";
+                                        LogIt.LogInfo(Status);
+                                        UpdatePayments(paymentList, DateTime.Now);
+                                        Status = $"Updated payment records for {curStudentFirst} {curStudentLast}";
+                                        LogIt.LogInfo(Status);
+                                        UpdateStudent(curStudentID, DateTime.Now);
+                                        Status = $"Updated notes for {curStudentFirst} {curStudentLast}";
+                                        LogIt.LogInfo(Status);
                                     }
                                     else if (r.StatusCode == System.Net.HttpStatusCode.PartialContent)
                                     {
@@ -257,14 +258,17 @@ namespace EmailPaymentAdvice
 
                         try
                         {
-                            //Execute(apiKey, curStudentFirst, curStudentLast, curStudentEmail, curSchoolContact, curSchoolContactEmail, textBody, htmlBody).Wait();
                             Response r = await SendEmail(apiKey, curStudentFirst, curStudentLast, curStudentEmail, curSchoolContact, curSchoolContactEmail, textBody, htmlBody);
-                            // if successful, update any payments
                             if (r.StatusCode == System.Net.HttpStatusCode.Accepted && paymentList.Count != 0)
                             {
-                                UpdatePayments(paymentList, DateTime.Now);
-                                UpdateStudent(curStudentID, DateTime.Now);
                                 Status = $"Sent email for {curStudentFirst} {curStudentLast}";
+                                LogIt.LogInfo(Status);
+                                UpdatePayments(paymentList, DateTime.Now);
+                                Status = $"Updated payment records for {curStudentFirst} {curStudentLast}";
+                                LogIt.LogInfo(Status);
+                                UpdateStudent(curStudentID, DateTime.Now);
+                                Status = $"Updated notes for {curStudentFirst} {curStudentLast}";
+                                LogIt.LogInfo(Status);
                             }
                             else if (r.StatusCode == System.Net.HttpStatusCode.PartialContent)
                             {
@@ -286,7 +290,7 @@ namespace EmailPaymentAdvice
                 }
 
             }
-
+            LogIt.LogInfo("Processing complete.");
         }
 
         #endregion
@@ -455,51 +459,51 @@ namespace EmailPaymentAdvice
              });
         }
 
-        async Task Execute(string apiKey, string studFirst, string studLast, string emailAddress, string schoolContact, string schoolEmail, string txtBody, string htmBody)
-        {
-            try
-            {
-                var client = new SendGridClient(apiKey);
-                var from = new EmailAddress("info@ShamrocksFA.com", "Shamrocks Unlimited");
-                var subject = "Financial Aid Awarded";
-                var to = new EmailAddress(sendTo == "student" ? emailAddress : sendTo, $"{studFirst} {studLast}");
-                var plainTextContent = txtBody;
-                var htmlContent = htmBody;
+        //async Task Execute(string apiKey, string studFirst, string studLast, string emailAddress, string schoolContact, string schoolEmail, string txtBody, string htmBody)
+        //{
+        //    try
+        //    {
+        //        var client = new SendGridClient(apiKey);
+        //        var from = new EmailAddress("info@ShamrocksFA.com", "Shamrocks Unlimited");
+        //        var subject = "Financial Aid Awarded";
+        //        var to = new EmailAddress(sendTo == "student" ? emailAddress : sendTo, $"{studFirst} {studLast}");
+        //        var plainTextContent = txtBody;
+        //        var htmlContent = htmBody;
 
-                if (to.Email == "")
-                {
-                    LogIt.LogError($"Missing email for {studFirst} {studLast}");
-                    response = null;
-                }
-                else
-                {
-                    var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+        //        if (to.Email == "")
+        //        {
+        //            LogIt.LogError($"Missing email for {studFirst} {studLast}");
+        //            response = null;
+        //        }
+        //        else
+        //        {
+        //            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
 
-                    // add any CCs from settings
-                    if (CCs.Count > 0)
-                    {
-                        var ccList = new List<EmailAddress>();
-                        foreach (var cc in CCs)
-                        {
-                            ccList.Add(new EmailAddress(cc, $"{studFirst} {studLast}"));
-                        }
-                        msg.AddCcs(ccList);
-                    }
+        //            // add any CCs from settings
+        //            if (CCs.Count > 0)
+        //            {
+        //                var ccList = new List<EmailAddress>();
+        //                foreach (var cc in CCs)
+        //                {
+        //                    ccList.Add(new EmailAddress(cc, $"{studFirst} {studLast}"));
+        //                }
+        //                msg.AddCcs(ccList);
+        //            }
 
-                    // add BCC from settings if supplied
-                    if (bccTo != "")
-                        msg.AddBcc(new EmailAddress(bccTo == "school" ? schoolEmail : bccTo, schoolContact));
+        //            // add BCC from settings if supplied
+        //            if (bccTo != "")
+        //                msg.AddBcc(new EmailAddress(bccTo == "school" ? schoolEmail : bccTo, schoolContact));
 
-                    response = await client.SendEmailAsync(msg);
-                    LogIt.LogInfo($"Sent email to {to.Name} <{to.Email}>, result={response.StatusCode.ToString()}");
-                }
+        //            response = await client.SendEmailAsync(msg);
+        //            LogIt.LogInfo($"Sent email to {to.Name} <{to.Email}>, result={response.StatusCode.ToString()}");
+        //        }
 
-            }
-            catch (Exception ex)
-            {
-                LogIt.LogError($"Could not send email: {ex.Message}");
-            }
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        LogIt.LogError($"Could not send email: {ex.Message}");
+        //    }
+        //}
     }
 
 }

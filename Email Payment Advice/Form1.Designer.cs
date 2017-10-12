@@ -42,17 +42,17 @@
             // lblFrom
             // 
             this.lblFrom.AutoSize = true;
-            this.lblFrom.Location = new System.Drawing.Point(9, 12);
+            this.lblFrom.Location = new System.Drawing.Point(26, 15);
             this.lblFrom.Name = "lblFrom";
-            this.lblFrom.Size = new System.Drawing.Size(109, 13);
+            this.lblFrom.Size = new System.Drawing.Size(147, 13);
             this.lblFrom.TabIndex = 0;
-            this.lblFrom.Text = "Payments Made From";
+            this.lblFrom.Text = "Include Payments Made From";
             this.lblFrom.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // dtpFromDate
             // 
             this.dtpFromDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpFromDate.Location = new System.Drawing.Point(124, 12);
+            this.dtpFromDate.Location = new System.Drawing.Point(179, 12);
             this.dtpFromDate.Name = "dtpFromDate";
             this.dtpFromDate.Size = new System.Drawing.Size(100, 20);
             this.dtpFromDate.TabIndex = 3;
@@ -61,7 +61,7 @@
             // dtpToDate
             // 
             this.dtpToDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpToDate.Location = new System.Drawing.Point(124, 38);
+            this.dtpToDate.Location = new System.Drawing.Point(179, 38);
             this.dtpToDate.Name = "dtpToDate";
             this.dtpToDate.Size = new System.Drawing.Size(100, 20);
             this.dtpToDate.TabIndex = 5;
@@ -70,18 +70,18 @@
             // lblTo
             // 
             this.lblTo.AutoSize = true;
-            this.lblTo.Location = new System.Drawing.Point(19, 38);
+            this.lblTo.Location = new System.Drawing.Point(9, 41);
             this.lblTo.Name = "lblTo";
-            this.lblTo.Size = new System.Drawing.Size(99, 13);
+            this.lblTo.Size = new System.Drawing.Size(164, 13);
             this.lblTo.TabIndex = 4;
-            this.lblTo.Text = "Payments Made To";
+            this.lblTo.Text = "Include Payments Made Through";
             this.lblTo.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // clbSchools
             // 
             this.clbSchools.CheckOnClick = true;
             this.clbSchools.FormattingEnabled = true;
-            this.clbSchools.Location = new System.Drawing.Point(124, 77);
+            this.clbSchools.Location = new System.Drawing.Point(179, 77);
             this.clbSchools.Name = "clbSchools";
             this.clbSchools.Size = new System.Drawing.Size(100, 94);
             this.clbSchools.TabIndex = 6;
@@ -89,7 +89,7 @@
             // lblSchools
             // 
             this.lblSchools.AutoSize = true;
-            this.lblSchools.Location = new System.Drawing.Point(20, 77);
+            this.lblSchools.Location = new System.Drawing.Point(75, 80);
             this.lblSchools.Name = "lblSchools";
             this.lblSchools.Size = new System.Drawing.Size(98, 13);
             this.lblSchools.TabIndex = 7;
@@ -98,11 +98,11 @@
             // 
             // btnProcess
             // 
-            this.btnProcess.Location = new System.Drawing.Point(230, 77);
+            this.btnProcess.Location = new System.Drawing.Point(285, 77);
             this.btnProcess.Name = "btnProcess";
-            this.btnProcess.Size = new System.Drawing.Size(112, 23);
+            this.btnProcess.Size = new System.Drawing.Size(145, 23);
             this.btnProcess.TabIndex = 8;
-            this.btnProcess.Text = "Process Selected";
+            this.btnProcess.Text = "Process Selected Schools";
             this.btnProcess.UseVisualStyleBackColor = true;
             this.btnProcess.Click += new System.EventHandler(this.btnProcess_Click);
             // 
