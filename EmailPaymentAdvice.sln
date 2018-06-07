@@ -15,20 +15,34 @@ EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{FE96BA49-3251-4933-A78C-81230E332A84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{FE96BA49-3251-4933-A78C-81230E332A84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE96BA49-3251-4933-A78C-81230E332A84}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FE96BA49-3251-4933-A78C-81230E332A84}.Debug|x86.Build.0 = Debug|Any CPU
 		{FE96BA49-3251-4933-A78C-81230E332A84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE96BA49-3251-4933-A78C-81230E332A84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE96BA49-3251-4933-A78C-81230E332A84}.Release|x86.ActiveCfg = Release|x86
+		{FE96BA49-3251-4933-A78C-81230E332A84}.Release|x86.Build.0 = Release|x86
 		{DD399A67-668D-4E37-ADCB-6C0E9ED193AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DD399A67-668D-4E37-ADCB-6C0E9ED193AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD399A67-668D-4E37-ADCB-6C0E9ED193AB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{DD399A67-668D-4E37-ADCB-6C0E9ED193AB}.Debug|x86.Build.0 = Debug|Any CPU
 		{DD399A67-668D-4E37-ADCB-6C0E9ED193AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DD399A67-668D-4E37-ADCB-6C0E9ED193AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD399A67-668D-4E37-ADCB-6C0E9ED193AB}.Release|x86.ActiveCfg = Release|x86
+		{DD399A67-668D-4E37-ADCB-6C0E9ED193AB}.Release|x86.Build.0 = Release|x86
 		{3A80F476-C874-4BFA-9813-89ADBCA2A75F}.Debug|Any CPU.ActiveCfg = Debug
 		{3A80F476-C874-4BFA-9813-89ADBCA2A75F}.Debug|Any CPU.Build.0 = Debug
+		{3A80F476-C874-4BFA-9813-89ADBCA2A75F}.Debug|x86.ActiveCfg = Debug
+		{3A80F476-C874-4BFA-9813-89ADBCA2A75F}.Debug|x86.Build.0 = Debug
 		{3A80F476-C874-4BFA-9813-89ADBCA2A75F}.Release|Any CPU.ActiveCfg = Release
+		{3A80F476-C874-4BFA-9813-89ADBCA2A75F}.Release|x86.ActiveCfg = Release
+		{3A80F476-C874-4BFA-9813-89ADBCA2A75F}.Release|x86.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

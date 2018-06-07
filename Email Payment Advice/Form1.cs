@@ -10,6 +10,10 @@ using System.Windows.Forms;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 using Aimm.Logging;
+using System.IO;
+using System.Xml;
+using System.Diagnostics;
+
 
 namespace EmailPaymentAdvice
 {
@@ -34,6 +38,16 @@ namespace EmailPaymentAdvice
         private string apiKey;
         DateTime fromDate;
         DateTime toDate;
+        string from_email;
+        string from_name;
+        string fromEmail;
+        string fromName;
+        private string msg = "";
+        private string tempSchools = "";
+        private string tempCCs = "";
+        private bool isIDE = (Debugger.IsAttached == true);
+        string[] args = Environment.GetCommandLineArgs();
+        private bool isAutoRun;
 
         private string text_body = "Dear {0} {1},\n\nYour Financial Aid to attend {2} has been posted "
                     + "to your student account as follows:\n\n{3}\n\n"
@@ -66,7 +80,7 @@ namespace EmailPaymentAdvice
         public string Status
         {
             get { return _status; }
-            set { _status = value; txtStatus.Text = value; }
+            set { _status = value; ShowStatus(value); }
         }
 
         #endregion
@@ -77,53 +91,74 @@ namespace EmailPaymentAdvice
         {
             LogIt.LogMethod();
 
-            apiKey = ConfigurationManager.AppSettings["SENDGRID_API_KEY"];
-            sendTo = ConfigurationManager.AppSettings["SendTo"];
-            var tempCCs = ConfigurationManager.AppSettings["SendCC"];
-            bccTo = ConfigurationManager.AppSettings["SendBCC"];
-            var tempSchools = ConfigurationManager.AppSettings["Schools"];
+            isAutoRun = args.Contains<string>("Unattended");
+            if (isAutoRun)
+                this.WindowState = FormWindowState.Minimized;
 
-            var tempFromDaysAgo = ConfigurationManager.AppSettings["FromDaysAgo"];
-            if (!int.TryParse(tempFromDaysAgo, out fromDaysAgo))
-                fromDaysAgo = 7;
-
-            var tempToDaysAgo = ConfigurationManager.AppSettings["ToDaysAgo"];
-            if (!int.TryParse(tempToDaysAgo, out toDaysAgo))
-                toDaysAgo = 14;
-
-            if (tempSchools.Length == 0)
+            lblVersion.Text = $"v {Application.ProductVersion.Substring(0, Application.ProductVersion.LastIndexOf("."))}";
+            
+            // get settings
+            try
             {
-                LogIt.LogError($"Bad data supplied: Schools={tempSchools}");
-                Application.Exit();
+                string settingsPath = "";
+                if (isIDE)
+                    settingsPath = Path.GetDirectoryName(Application.ExecutablePath);
+                else
+                    settingsPath = Application.CommonAppDataPath.Remove(Application.CommonAppDataPath.LastIndexOf("."));
+
+                string settingsFile = Path.Combine(settingsPath, "Settings.xml");
+                XmlDocument doc = new ConfigXmlDocument();
+                doc.Load(settingsFile);
+                apiKey = GetSetting(doc, "SENDGRID_API_KEY");
+                sendTo = GetSetting(doc, "SendTo");
+                tempCCs = GetSetting(doc, "SendCC");
+                bccTo = GetSetting(doc, "SendBCC");
+                tempSchools = GetSetting(doc, "Schools");
+                var tempFromDaysAgo = GetSetting(doc, "FromDaysAgo");
+                var tempToDaysAgo = GetSetting(doc, "ToDaysAgo");
+                from_email = GetSetting(doc, "FromEmail");
+                from_name = GetSetting(doc, "FromName");
+
+                doc = null;
+
+                if (!int.TryParse(tempFromDaysAgo, out fromDaysAgo))
+                    fromDaysAgo = 7;
+
+                if (!int.TryParse(tempToDaysAgo, out toDaysAgo))
+                    toDaysAgo = 14;
             }
-            else
+            catch (Exception ex)
             {
-                fromDate = DateTime.Today.AddDays(-fromDaysAgo);
-                dtpFromDate.Value = fromDate;
-                toDate = DateTime.Today.AddDays(-toDaysAgo);
-                dtpToDate.Value = toDate;
-                LogIt.LogInfo($"Got beginning and ending dates from config file: FromDate={fromDate.ToShortDateString()}, ToDate={toDate.ToShortDateString()}");
+                Status = $"Error getting application settings: {ex.Message}";
+                LogIt.LogError(Status);
+            }
 
-                Schools = tempSchools.Split(',').ToList<string>();
+            fromDate = DateTime.Today.AddDays(-fromDaysAgo);
+            dtpFromDate.Value = fromDate;
+            toDate = DateTime.Today.AddDays(-toDaysAgo);
+            dtpToDate.Value = toDate;
+            LogIt.LogInfo($"Got beginning and ending dates from settings file: FromDate={fromDate.ToShortDateString()}, ToDate={toDate.ToShortDateString()}");
+
+            Schools = tempSchools.Split(',').ToList<string>();
+            if(tempCCs != "")
                 CCs = tempCCs.Split(',').ToList<string>();
 
-                // load the schools list
-                DataSet ds = GetAllSchools();
-                List<string> allSchools = new List<string>();
-                foreach (DataRow row in ds.Tables[0].Rows)
-                {
-                    allSchools.Add(row.ItemArray[0].ToString());
-                }
-                clbSchools.DataSource = allSchools;
-
-                // check the items
-                for (int i = 0; i < Schools.Count; i++)
-                {
-                    clbSchools.SetItemChecked(clbSchools.Items.IndexOf(Schools[i]), true);
-                }
+            // load the schools list
+            DataSet ds = GetAllSchools();
+            List<string> allSchools = new List<string>();
+            foreach (DataRow row in ds.Tables[0].Rows)
+            {
+                allSchools.Add(row.ItemArray[0].ToString());
             }
+            clbSchools.DataSource = allSchools;
 
-
+            // check the items
+            for (int i = 0; i < Schools.Count; i++)
+            {
+                clbSchools.SetItemChecked(clbSchools.Items.IndexOf(Schools[i]), true);
+            }
+            if (isAutoRun)
+                btnProcess_Click(btnProcess, null);
         }
 
         private void dtpFromDate_ValueChanged(object sender, EventArgs e)
@@ -145,7 +180,8 @@ namespace EmailPaymentAdvice
                 StringBuilder sbText = new StringBuilder();
                 StringBuilder sbHtml = new StringBuilder();
                 List<int> paymentList = new List<int>();
-
+                fromEmail = from_email.Replace("{school}", school);
+                fromName = from_name.Replace("{school}", school);
                 Status = $"Processing: School={school}, From={fromDate.ToShortDateString()}, To={toDate.ToShortDateString()}";
                 LogIt.LogInfo(Status);
 
@@ -177,30 +213,25 @@ namespace EmailPaymentAdvice
                                 try
                                 {
                                     // send the email, update payments and student if successful
-                                    Response r = await SendEmail(apiKey, curStudentFirst, curStudentLast, curStudentEmail, curSchoolContact, curSchoolContactEmail, textBody, htmlBody);
+                                    Response r = await SendEmail(apiKey, curStudentFirst, curStudentLast, curStudentEmail, fromEmail, fromName, curSchoolContact, curSchoolContactEmail, textBody, htmlBody);
                                     if (r.StatusCode == System.Net.HttpStatusCode.Accepted && paymentList.Count != 0)
                                     {
-                                        Status = $"Sent email for {curStudentFirst} {curStudentLast}";
-                                        LogIt.LogInfo(Status);
-                                        UpdatePayments(paymentList, DateTime.Now);
-                                        Status = $"Updated payment records for {curStudentFirst} {curStudentLast}";
-                                        LogIt.LogInfo(Status);
-                                        UpdateStudent(curStudentID, DateTime.Now);
-                                        Status = $"Updated notes for {curStudentFirst} {curStudentLast}";
-                                        LogIt.LogInfo(Status);
+                                        UpdatePayments(curStudentFirst, curStudentLast, paymentList, DateTime.Now);
+                                        UpdateStudent(curStudentFirst, curStudentLast, curStudentID, DateTime.Now);
+                                        Status = $"Updated payment records & notes for {curStudentFirst} {curStudentLast}";
                                     }
-                                    else if (r.StatusCode == System.Net.HttpStatusCode.PartialContent)
-                                    {
-                                        Status = $"Missing email for {curStudentFirst} {curStudentLast}";
-                                    }
-                                    else if (r.StatusCode == System.Net.HttpStatusCode.PreconditionFailed)
-                                    {
-                                        Status = $"Error occurred trying to send email for {curStudentFirst} {curStudentLast}";
-                                    }
+                                    //else if (r.StatusCode == System.Net.HttpStatusCode.PartialContent)
+                                    //{
+                                    //    Status = $"Missing email for {curStudentFirst} {curStudentLast}";
+                                    //}
+                                    //else if (r.StatusCode == System.Net.HttpStatusCode.PreconditionFailed)
+                                    //{
+                                    //    Status = $"Error occurred trying to send email for {curStudentFirst} {curStudentLast}";
+                                    //}
                                 }
                                 catch (Exception ex)
                                 {
-                                    Status = $"Error sending email: {ex.Message}";
+                                    Status = $"Error sending email or updating tables: {ex.Message}";
                                     LogIt.LogError(Status);
                                 }
 
@@ -258,44 +289,72 @@ namespace EmailPaymentAdvice
 
                         try
                         {
-                            Response r = await SendEmail(apiKey, curStudentFirst, curStudentLast, curStudentEmail, curSchoolContact, curSchoolContactEmail, textBody, htmlBody);
+                            Response r = await SendEmail(apiKey, curStudentFirst, curStudentLast, curStudentEmail, curSchoolContact, curSchoolContactEmail, fromEmail, fromName, textBody, htmlBody);
                             if (r.StatusCode == System.Net.HttpStatusCode.Accepted && paymentList.Count != 0)
                             {
-                                Status = $"Sent email for {curStudentFirst} {curStudentLast}";
-                                LogIt.LogInfo(Status);
-                                UpdatePayments(paymentList, DateTime.Now);
-                                Status = $"Updated payment records for {curStudentFirst} {curStudentLast}";
-                                LogIt.LogInfo(Status);
-                                UpdateStudent(curStudentID, DateTime.Now);
-                                Status = $"Updated notes for {curStudentFirst} {curStudentLast}";
-                                LogIt.LogInfo(Status);
+                                UpdatePayments(curStudentFirst, curStudentLast, paymentList, DateTime.Now);
+                                UpdateStudent(curStudentFirst, curStudentLast, curStudentID, DateTime.Now);
+                                Status = $"Updated payment records & notes for {curStudentFirst} {curStudentLast}";
                             }
-                            else if (r.StatusCode == System.Net.HttpStatusCode.PartialContent)
-                            {
-                                Status = $"Missing email for {curStudentFirst} {curStudentLast}";
-                            }
-                            else if (r.StatusCode == System.Net.HttpStatusCode.PreconditionFailed)
-                            {
-                                Status = $"Error occurred trying to send email for {curStudentFirst} {curStudentLast}";
-                            }
+                            //else if (r.StatusCode == System.Net.HttpStatusCode.PartialContent)
+                            //{
+                            //    Status = $"Missing email for {curStudentFirst} {curStudentLast}";
+                            //}
+                            //else if (r.StatusCode == System.Net.HttpStatusCode.PreconditionFailed)
+                            //{
+                            //    Status = $"Error occurred trying to send email for {curStudentFirst} {curStudentLast}";
+                            //}
                         }
                         catch (Exception ex)
                         {
-                            Status = $"Error: {ex.Message}";
+                            Status = $"Error sending email or updating tables: {ex.Message}";
                             LogIt.LogError(Status);
                         }
 
                     }
-
+                    Status = $"Processing complete for {school}.";
+                    LogIt.LogInfo(Status);
                 }
-
             }
-            LogIt.LogInfo("Processing complete.");
+            if (isAutoRun)
+                Application.Exit();
         }
 
         #endregion
 
         #region methods
+
+        delegate void StringArgReturningVoidDelegate(string status);
+        private void ShowStatus(string status)
+        {
+            // InvokeRequired required compares the thread ID of the  
+            // calling thread to the thread ID of the creating thread.  
+            // If these threads are different, it returns true.  
+            if (txtStatus.InvokeRequired)
+            {
+                StringArgReturningVoidDelegate d = new StringArgReturningVoidDelegate(ShowStatus);
+                this.Invoke(d, new object[] { status });
+            }
+            else
+            {
+                txtStatus.Text = status;
+            }
+        }
+
+
+        private string GetSetting(XmlDocument doc, string settingName)
+        {
+            string response = "";
+            try
+            {
+                response = ((XmlElement)doc.SelectSingleNode($"/Settings/setting[@name='{settingName}']")).GetAttribute("value");
+
+            }
+            catch (Exception)
+            {
+            }
+            return response;
+        }
 
         private DataSet GetAllSchools()
         {
@@ -325,9 +384,9 @@ namespace EmailPaymentAdvice
             return ds;
         }
 
-        private void UpdateStudent(int student, DateTime now)
+        private void UpdateStudent(string studentFirst, string studentLast, int student, DateTime now)
         {
-            string update_sql = $"Update Student set Notes = concat(Notes, '{"\r\n"}', '{now.ToString("MM/dd/yyyy")}: EFC email sent.') where StudentID = ({student});";
+            string update_sql = $"Update Student set Notes = concat(Notes, '{"\r\n"}', '{now.ToString("MM/dd/yyyy")}: EFT email sent.') where StudentID = ({student});";
 
             using (ODBCClass o = new ODBCClass("MySql"))
             {
@@ -337,7 +396,7 @@ namespace EmailPaymentAdvice
                     try
                     {
                         var rows = oCommand.ExecuteNonQuery();
-                        LogIt.LogInfo($"Updated student ID {student}, Rows affected: {rows}");
+                        LogIt.LogInfo($"Updated notes for {studentFirst} {studentLast} (student ID {student}), Rows affected: {rows}");
                     }
                     catch (Exception ex)
                     {
@@ -347,7 +406,7 @@ namespace EmailPaymentAdvice
             }
         }
 
-        private void UpdatePayments(List<int> paymentList, DateTime now)
+        private void UpdatePayments(string studentFirst, string studentLast, List<int> paymentList, DateTime now)
         {
             string inList = string.Join(",", paymentList.ConvertAll(Convert.ToString));
             string update_sql = $"Update Payments p set p.AdviceDate = '{now.ToString("yyyy-MM-dd HH:mm:ss")}' where p.PaymentID in({inList});";
@@ -362,7 +421,7 @@ namespace EmailPaymentAdvice
                     try
                     {
                         var rows = oCommand.ExecuteNonQuery();
-                        LogIt.LogInfo($"Updated payment IDs {inList}, Rows affected: {rows}");
+                        LogIt.LogInfo($"Updated payments for {studentFirst} {studentLast}, IDs {inList}, Rows affected: {rows}");
                     }
                     catch (Exception ex)
                     {
@@ -407,13 +466,13 @@ namespace EmailPaymentAdvice
 
         #endregion
 
-        private async Task<Response> SendEmail(string apiKey, string studFirst, string studLast, string emailAddress, string schoolContact, string schoolEmail, string txtBody, string htmBody)
+        private async Task<Response> SendEmail(string apiKey, string studFirst, string studLast, string emailAddress, string fromEmail, string fromName, string schoolContact, string schoolEmail, string txtBody, string htmBody)
         {
             return await Task<Response>.Run(async () =>
              {
                  Response resp = new Response(System.Net.HttpStatusCode.PartialContent, null, null);
                  var client = new SendGridClient(apiKey);
-                 var from = new EmailAddress("info@ShamrocksFA.com", "Shamrocks Unlimited");
+                 var from = new EmailAddress(fromEmail, fromName);
                  var subject = "Financial Aid Awarded";
                  var to = new EmailAddress(sendTo == "student" ? emailAddress : sendTo, $"{studFirst} {studLast}");
                  var plainTextContent = txtBody;
@@ -421,7 +480,8 @@ namespace EmailPaymentAdvice
 
                  if (to.Email == "")
                  {
-                     LogIt.LogError($"Missing email for {studFirst} {studLast}");
+                     Status = $"Missing email for {studFirst} {studLast}";
+                     LogIt.LogError(Status);
                  }
                  else
                  {
@@ -446,12 +506,14 @@ namespace EmailPaymentAdvice
 
                          resp = await client.SendEmailAsync(msg);
 
-                         LogIt.LogInfo($"Sent email to {to.Name} <{to.Email}>, result={resp.StatusCode.ToString()}");
+                         Status = $"Sent email to {to.Name} <{to.Email}>, result={resp.StatusCode.ToString()}";
+                         LogIt.LogInfo(Status);
 
                      }
                      catch (Exception ex)
                      {
-                         LogIt.LogError($"Could not send email: {ex.Message}");
+                         Status = $"Could not send email: {ex.Message}";
+                         LogIt.LogError(Status);
                          resp.StatusCode = System.Net.HttpStatusCode.PreconditionFailed;
                      }
                  }
@@ -459,51 +521,6 @@ namespace EmailPaymentAdvice
              });
         }
 
-        //async Task Execute(string apiKey, string studFirst, string studLast, string emailAddress, string schoolContact, string schoolEmail, string txtBody, string htmBody)
-        //{
-        //    try
-        //    {
-        //        var client = new SendGridClient(apiKey);
-        //        var from = new EmailAddress("info@ShamrocksFA.com", "Shamrocks Unlimited");
-        //        var subject = "Financial Aid Awarded";
-        //        var to = new EmailAddress(sendTo == "student" ? emailAddress : sendTo, $"{studFirst} {studLast}");
-        //        var plainTextContent = txtBody;
-        //        var htmlContent = htmBody;
-
-        //        if (to.Email == "")
-        //        {
-        //            LogIt.LogError($"Missing email for {studFirst} {studLast}");
-        //            response = null;
-        //        }
-        //        else
-        //        {
-        //            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
-
-        //            // add any CCs from settings
-        //            if (CCs.Count > 0)
-        //            {
-        //                var ccList = new List<EmailAddress>();
-        //                foreach (var cc in CCs)
-        //                {
-        //                    ccList.Add(new EmailAddress(cc, $"{studFirst} {studLast}"));
-        //                }
-        //                msg.AddCcs(ccList);
-        //            }
-
-        //            // add BCC from settings if supplied
-        //            if (bccTo != "")
-        //                msg.AddBcc(new EmailAddress(bccTo == "school" ? schoolEmail : bccTo, schoolContact));
-
-        //            response = await client.SendEmailAsync(msg);
-        //            LogIt.LogInfo($"Sent email to {to.Name} <{to.Email}>, result={response.StatusCode.ToString()}");
-        //        }
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        LogIt.LogError($"Could not send email: {ex.Message}");
-        //    }
-        //}
     }
 
 }

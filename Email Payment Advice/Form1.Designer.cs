@@ -37,12 +37,13 @@
             this.btnProcess = new System.Windows.Forms.Button();
             this.lblStatus = new System.Windows.Forms.Label();
             this.txtStatus = new System.Windows.Forms.TextBox();
+            this.lblVersion = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblFrom
             // 
             this.lblFrom.AutoSize = true;
-            this.lblFrom.Location = new System.Drawing.Point(26, 15);
+            this.lblFrom.Location = new System.Drawing.Point(26, 41);
             this.lblFrom.Name = "lblFrom";
             this.lblFrom.Size = new System.Drawing.Size(147, 13);
             this.lblFrom.TabIndex = 0;
@@ -52,7 +53,7 @@
             // dtpFromDate
             // 
             this.dtpFromDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpFromDate.Location = new System.Drawing.Point(179, 12);
+            this.dtpFromDate.Location = new System.Drawing.Point(179, 38);
             this.dtpFromDate.Name = "dtpFromDate";
             this.dtpFromDate.Size = new System.Drawing.Size(100, 20);
             this.dtpFromDate.TabIndex = 3;
@@ -61,7 +62,7 @@
             // dtpToDate
             // 
             this.dtpToDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpToDate.Location = new System.Drawing.Point(179, 38);
+            this.dtpToDate.Location = new System.Drawing.Point(179, 64);
             this.dtpToDate.Name = "dtpToDate";
             this.dtpToDate.Size = new System.Drawing.Size(100, 20);
             this.dtpToDate.TabIndex = 5;
@@ -70,7 +71,7 @@
             // lblTo
             // 
             this.lblTo.AutoSize = true;
-            this.lblTo.Location = new System.Drawing.Point(9, 41);
+            this.lblTo.Location = new System.Drawing.Point(9, 67);
             this.lblTo.Name = "lblTo";
             this.lblTo.Size = new System.Drawing.Size(164, 13);
             this.lblTo.TabIndex = 4;
@@ -81,7 +82,7 @@
             // 
             this.clbSchools.CheckOnClick = true;
             this.clbSchools.FormattingEnabled = true;
-            this.clbSchools.Location = new System.Drawing.Point(179, 77);
+            this.clbSchools.Location = new System.Drawing.Point(179, 103);
             this.clbSchools.Name = "clbSchools";
             this.clbSchools.Size = new System.Drawing.Size(100, 94);
             this.clbSchools.TabIndex = 6;
@@ -89,7 +90,7 @@
             // lblSchools
             // 
             this.lblSchools.AutoSize = true;
-            this.lblSchools.Location = new System.Drawing.Point(75, 80);
+            this.lblSchools.Location = new System.Drawing.Point(75, 106);
             this.lblSchools.Name = "lblSchools";
             this.lblSchools.Size = new System.Drawing.Size(98, 13);
             this.lblSchools.TabIndex = 7;
@@ -98,7 +99,7 @@
             // 
             // btnProcess
             // 
-            this.btnProcess.Location = new System.Drawing.Point(285, 77);
+            this.btnProcess.Location = new System.Drawing.Point(285, 103);
             this.btnProcess.Name = "btnProcess";
             this.btnProcess.Size = new System.Drawing.Size(145, 23);
             this.btnProcess.TabIndex = 8;
@@ -109,7 +110,7 @@
             // lblStatus
             // 
             this.lblStatus.AutoSize = true;
-            this.lblStatus.Location = new System.Drawing.Point(20, 189);
+            this.lblStatus.Location = new System.Drawing.Point(20, 215);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(37, 13);
             this.lblStatus.TabIndex = 9;
@@ -118,19 +119,27 @@
             // 
             // txtStatus
             // 
-            this.txtStatus.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtStatus.Location = new System.Drawing.Point(63, 189);
+            this.txtStatus.Location = new System.Drawing.Point(63, 213);
             this.txtStatus.Multiline = true;
             this.txtStatus.Name = "txtStatus";
             this.txtStatus.Size = new System.Drawing.Size(520, 60);
             this.txtStatus.TabIndex = 10;
             // 
+            // lblVersion
+            // 
+            this.lblVersion.AutoSize = true;
+            this.lblVersion.Location = new System.Drawing.Point(12, 9);
+            this.lblVersion.Name = "lblVersion";
+            this.lblVersion.Size = new System.Drawing.Size(35, 13);
+            this.lblVersion.TabIndex = 11;
+            this.lblVersion.Text = "label1";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(595, 261);
+            this.ClientSize = new System.Drawing.Size(595, 296);
+            this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.txtStatus);
             this.Controls.Add(this.lblStatus);
             this.Controls.Add(this.btnProcess);
@@ -159,5 +168,6 @@
         private System.Windows.Forms.Button btnProcess;
         private System.Windows.Forms.Label lblStatus;
         private System.Windows.Forms.TextBox txtStatus;
+        private System.Windows.Forms.Label lblVersion;
     }
 }

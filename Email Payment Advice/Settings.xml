@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Settings>
+  <!-- Schools: value=comma-separated list of schools to process by default -->
+  <setting name="Schools" serializeAs="String" value="UAV"/>
+  <!-- FromDaysAgo: value=number of days prior to current date to START looking for payments by default -->
+  <setting name="FromDaysAgo" serializeAs="String" value="12"/>
+  <!-- ToDaysAgo: value=number of days prior to current date to STOP looking for payments by default -->
+  <setting name="ToDaysAgo" serializeAs="int" value="5"/>
+  <!-- SendTo: value="student" sends email to each student. If valid email address, sends there instead -->
+  <setting name="SendTo" serializeAs="String" value="student"/>
+  <!-- FromEmail: value="From" email address -->
+  <setting name="FromEmail" serializeAs="String" value="NoReply@{school}.edu"/>
+  <!-- FromName: value="From" email name -->
+  <setting name="FromName" serializeAs="String" value="{school}"/>
+  <!-- SendCC: value=comma-separated list of email addresses to send CCs to -->
+  <setting name="SendCC" serializeAs="String" value=""/>
+  <!-- SendBCC: value=comma-separated list of email addresses to send BCCs to -->
+  <setting name="SendBCC" serializeAs="String" value=""/>
+  <!-- SENDGRID_API_KEY: value=SendGrid API key for customer, DO NOT CHANGE -->
+  <setting name="SENDGRID_API_KEY" serializeAs="String" value="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"/>
+</Settings>

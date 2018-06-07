@@ -45,6 +45,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_917CCA40CDE24839917DE5C73CEE6E7B"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_C9743CFB96A87AF5E4151CA0BCED140C"
         "OwnerKey" = "8:_2E74B289CBA345FCB32D6D51384BA214"
         "MsmSig" = "8:_UNDEFINED"
@@ -140,6 +146,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.5"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.5 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.5"
+                    }
+                }
             }
         }
         "Release"
@@ -164,6 +178,14 @@
             "PrerequisitesLocation" = "2:1"
             "Url" = "8:"
             "ComponentsUrl" = "8:"
+                "Items"
+                {
+                    "{EDC2488A-8267-493A-A98E-7D9C3B36CDF3}:.NETFramework,Version=v4.5"
+                    {
+                    "Name" = "8:Microsoft .NET Framework 4.5 (x86 and x64)"
+                    "ProductCode" = "8:.NETFramework,Version=v4.5"
+                    }
+                }
             }
         }
     }
@@ -285,6 +307,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_917CCA40CDE24839917DE5C73CEE6E7B"
+            {
+            "SourcePath" = "8:..\\Email Payment Advice\\bin\\Debug\\Settings.xml"
+            "TargetName" = "8:Settings.xml"
+            "Tag" = "8:"
+            "Folder" = "8:_D85E05CFD8AA46A5B3CF30AA34F83718"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C9743CFB96A87AF5E4151CA0BCED140C"
@@ -420,6 +462,18 @@
                 {
                 }
             }
+            "{994432C3-9487-495D-8656-3E829A8DBDDE}:_D85E05CFD8AA46A5B3CF30AA34F83718"
+            {
+            "DefaultLocation" = "8:[CommonAppDataFolder][Manufacturer]\\[ProductName]\\[ProductVersion]"
+            "Name" = "8:Application's Data Folder"
+            "AlwaysCreate" = "11:FALSE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Property" = "8:NEWPROPERTY1"
+                "Folders"
+                {
+                }
+            }
         }
         "LaunchCondition"
         {
@@ -436,15 +490,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:EmailPaymentAdvice"
-        "ProductCode" = "8:{38EADC25-827B-4A49-84D8-CB8C46893953}"
-        "PackageCode" = "8:{4898A968-8BB7-4A00-906A-74F250790062}"
+        "ProductCode" = "8:{DCE50443-2954-41E4-A160-0423C032CCAE}"
+        "PackageCode" = "8:{6F41EFE1-E849-49F7-B2B6-84B5469DDB18}"
         "UpgradeCode" = "8:{5945F11B-EFE0-45F1-AAB1-537F558FBED5}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.0.6"
+        "ProductVersion" = "8:1.1.2"
         "Manufacturer" = "8:RonM"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -1175,6 +1229,34 @@
             "OutputConfiguration" = "8:"
             "OutputGroupCanonicalName" = "8:Symbols"
             "OutputProjectGuid" = "8:{FE96BA49-3251-4933-A78C-81230E332A84}"
+            "ShowKeyOutput" = "11:TRUE"
+                "ExcludeFilters"
+                {
+                }
+            }
+            "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_FBB5AE63D22C40E6AF8AF8AB5B6905EC"
+            {
+            "SourcePath" = "8:"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_43E22F4428E44B3F8EB8483D8AFC656E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            "ProjectOutputGroupRegister" = "3:1"
+            "OutputConfiguration" = "8:"
+            "OutputGroupCanonicalName" = "8:ContentFiles"
+            "OutputProjectGuid" = "8:{DD399A67-668D-4E37-ADCB-6C0E9ED193AB}"
             "ShowKeyOutput" = "11:TRUE"
                 "ExcludeFilters"
                 {
