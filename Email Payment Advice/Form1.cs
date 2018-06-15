@@ -109,7 +109,6 @@ namespace EmailPaymentAdvice
                 string settingsFile = Path.Combine(settingsPath, "Settings.xml");
                 XmlDocument doc = new ConfigXmlDocument();
                 doc.Load(settingsFile);
-                apiKey = GetSetting(doc, "SENDGRID_API_KEY");
                 sendTo = GetSetting(doc, "SendTo");
                 tempCCs = GetSetting(doc, "SendCC");
                 bccTo = GetSetting(doc, "SendBCC");
@@ -120,6 +119,11 @@ namespace EmailPaymentAdvice
                 from_name = GetSetting(doc, "FromName");
 
                 doc = null;
+
+                // get api key from file
+                string apiKeyFile = Path.Combine(settingsPath, "SendgridAPIKey.txt");
+                apiKey = File.ReadAllText(apiKeyFile);
+
 
                 if (!int.TryParse(tempFromDaysAgo, out fromDaysAgo))
                     fromDaysAgo = 7;

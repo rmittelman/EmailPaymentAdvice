@@ -16,6 +16,4 @@
   <setting name="SendCC" serializeAs="String" value=""/>
   <!-- SendBCC: value=comma-separated list of email addresses to send BCCs to -->
   <setting name="SendBCC" serializeAs="String" value=""/>
-  <!-- SENDGRID_API_KEY: value=SendGrid API key for customer, DO NOT CHANGE -->
-  <setting name="SENDGRID_API_KEY" serializeAs="String" value="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"/>
 </Settings>
