@@ -15,31 +15,31 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_13EAC0950F64555CAF750822083A756B"
-        "OwnerKey" = "8:_2E74B289CBA345FCB32D6D51384BA214"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_2E74B289CBA345FCB32D6D51384BA214"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_639615EE6BFCCA0231DD04CCC1313FCA"
-        "OwnerKey" = "8:_EA472E0C23294BB12EE1E0E4EA8456BD"
+        "MsmKey" = "8:_46529F52419FD45EDCDA33BBEEBC2B1A"
+        "OwnerKey" = "8:_CC3676DAEFE9DD23453E0007F4BC841E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_639615EE6BFCCA0231DD04CCC1313FCA"
+        "MsmKey" = "8:_46529F52419FD45EDCDA33BBEEBC2B1A"
         "OwnerKey" = "8:_2E74B289CBA345FCB32D6D51384BA214"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_77624FC22326C87E0C7511D3892F94F9"
+        "MsmKey" = "8:_742C8539174D4B75873C6458629C93D2"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_7FA6315B81373F8A9545AA8C9E91C331"
         "OwnerKey" = "8:_2E74B289CBA345FCB32D6D51384BA214"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -51,31 +51,37 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_C9743CFB96A87AF5E4151CA0BCED140C"
+        "MsmKey" = "8:_965F3D56521156B4BD592BB43A3ABB3C"
         "OwnerKey" = "8:_2E74B289CBA345FCB32D6D51384BA214"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_C9743CFB96A87AF5E4151CA0BCED140C"
-        "OwnerKey" = "8:_13EAC0950F64555CAF750822083A756B"
+        "MsmKey" = "8:_965F3D56521156B4BD592BB43A3ABB3C"
+        "OwnerKey" = "8:_CF2B647E773A614DDDFD8297FF851B48"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_DA5D72A193085B52116AFFD76ED17F69"
+        "MsmKey" = "8:_C9B5FF0B7D76C689213C6EBBCA9474DF"
         "OwnerKey" = "8:_2E74B289CBA345FCB32D6D51384BA214"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_DA5D72A193085B52116AFFD76ED17F69"
-        "OwnerKey" = "8:_13EAC0950F64555CAF750822083A756B"
+        "MsmKey" = "8:_C9B5FF0B7D76C689213C6EBBCA9474DF"
+        "OwnerKey" = "8:_CF2B647E773A614DDDFD8297FF851B48"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_EA472E0C23294BB12EE1E0E4EA8456BD"
+        "MsmKey" = "8:_CC3676DAEFE9DD23453E0007F4BC841E"
+        "OwnerKey" = "8:_2E74B289CBA345FCB32D6D51384BA214"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_CF2B647E773A614DDDFD8297FF851B48"
         "OwnerKey" = "8:_2E74B289CBA345FCB32D6D51384BA214"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -88,37 +94,37 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_13EAC0950F64555CAF750822083A756B"
+        "OwnerKey" = "8:_965F3D56521156B4BD592BB43A3ABB3C"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_DA5D72A193085B52116AFFD76ED17F69"
+        "OwnerKey" = "8:_46529F52419FD45EDCDA33BBEEBC2B1A"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_77624FC22326C87E0C7511D3892F94F9"
+        "OwnerKey" = "8:_CC3676DAEFE9DD23453E0007F4BC841E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_EA472E0C23294BB12EE1E0E4EA8456BD"
+        "OwnerKey" = "8:_7FA6315B81373F8A9545AA8C9E91C331"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_639615EE6BFCCA0231DD04CCC1313FCA"
+        "OwnerKey" = "8:_C9B5FF0B7D76C689213C6EBBCA9474DF"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C9743CFB96A87AF5E4151CA0BCED140C"
+        "OwnerKey" = "8:_CF2B647E773A614DDDFD8297FF851B48"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -216,49 +222,13 @@
         }
         "File"
         {
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_13EAC0950F64555CAF750822083A756B"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:SendGrid, Version=9.8.0.0, Culture=neutral, PublicKeyToken=4f047e93159395ca, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_13EAC0950F64555CAF750822083A756B"
-                    {
-                    "Name" = "8:SendGrid.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:SendGrid.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_43E22F4428E44B3F8EB8483D8AFC656E"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_639615EE6BFCCA0231DD04CCC1313FCA"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_46529F52419FD45EDCDA33BBEEBC2B1A"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_639615EE6BFCCA0231DD04CCC1313FCA"
-                    {
-                    "Name" = "8:log4net.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:log4net.dll"
             "TargetName" = "8:"
@@ -278,18 +248,33 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_77624FC22326C87E0C7511D3892F94F9"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_742C8539174D4B75873C6458629C93D2"
+            {
+            "SourcePath" = "8:..\\Email Payment Advice\\bin\\Debug\\SendGridAPIKey.txt"
+            "TargetName" = "8:SendGridAPIKey.txt"
+            "Tag" = "8:"
+            "Folder" = "8:_D85E05CFD8AA46A5B3CF30AA34F83718"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_7FA6315B81373F8A9545AA8C9E91C331"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_77624FC22326C87E0C7511D3892F94F9"
-                    {
-                    "Name" = "8:MySql.Data.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:MySql.Data.dll"
             "TargetName" = "8:"
@@ -329,18 +314,13 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C9743CFB96A87AF5E4151CA0BCED140C"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_965F3D56521156B4BD592BB43A3ABB3C"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
                 "ScatterAssemblies"
                 {
-                    "_C9743CFB96A87AF5E4151CA0BCED140C"
-                    {
-                    "Name" = "8:System.Net.Http.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:System.Net.Http.dll"
             "TargetName" = "8:"
@@ -360,18 +340,13 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_DA5D72A193085B52116AFFD76ED17F69"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C9B5FF0B7D76C689213C6EBBCA9474DF"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_DA5D72A193085B52116AFFD76ED17F69"
-                    {
-                    "Name" = "8:Newtonsoft.Json.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Newtonsoft.Json.dll"
             "TargetName" = "8:"
@@ -391,20 +366,41 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_EA472E0C23294BB12EE1E0E4EA8456BD"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_CC3676DAEFE9DD23453E0007F4BC841E"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:Aimm.Logging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_EA472E0C23294BB12EE1E0E4EA8456BD"
-                    {
-                    "Name" = "8:Aimm.Logging.dll"
-                    "Attributes" = "3:512"
-                    }
                 }
             "SourcePath" = "8:Aimm.Logging.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_43E22F4428E44B3F8EB8483D8AFC656E"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_CF2B647E773A614DDDFD8297FF851B48"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:SendGrid, Version=9.8.0.0, Culture=neutral, PublicKeyToken=4f047e93159395ca, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                }
+            "SourcePath" = "8:SendGrid.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_43E22F4428E44B3F8EB8483D8AFC656E"
@@ -490,15 +486,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:EmailPaymentAdvice"
-        "ProductCode" = "8:{DCE50443-2954-41E4-A160-0423C032CCAE}"
-        "PackageCode" = "8:{6F41EFE1-E849-49F7-B2B6-84B5469DDB18}"
+        "ProductCode" = "8:{DAAF2856-0E0E-417A-9107-A11BF4E3BA5A}"
+        "PackageCode" = "8:{25E7F8E9-8935-499D-AC2D-6F8661FB5C14}"
         "UpgradeCode" = "8:{5945F11B-EFE0-45F1-AAB1-537F558FBED5}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.1.2"
+        "ProductVersion" = "8:1.1.4"
         "Manufacturer" = "8:RonM"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

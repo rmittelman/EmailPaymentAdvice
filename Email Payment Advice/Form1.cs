@@ -188,6 +188,7 @@ namespace EmailPaymentAdvice
                 fromName = from_name.Replace("{school}", school);
                 Status = $"Processing: School={school}, From={fromDate.ToShortDateString()}, To={toDate.ToShortDateString()}";
                 LogIt.LogInfo(Status);
+                int problems = 0;
 
                 // get the payments
                 DataSet ds = GetPaymentsForSchool(school);
@@ -224,19 +225,24 @@ namespace EmailPaymentAdvice
                                         UpdateStudent(curStudentFirst, curStudentLast, curStudentID, DateTime.Now);
                                         Status = $"Updated payment records & notes for {curStudentFirst} {curStudentLast}";
                                     }
-                                    //else if (r.StatusCode == System.Net.HttpStatusCode.PartialContent)
-                                    //{
-                                    //    Status = $"Missing email for {curStudentFirst} {curStudentLast}";
-                                    //}
-                                    //else if (r.StatusCode == System.Net.HttpStatusCode.PreconditionFailed)
-                                    //{
-                                    //    Status = $"Error occurred trying to send email for {curStudentFirst} {curStudentLast}";
-                                    //}
+                                    else if(r.StatusCode == System.Net.HttpStatusCode.PartialContent)
+                                    {
+                                        Status = $"Missing email for {curStudentFirst} {curStudentLast}";
+                                        LogIt.LogError(Status);
+                                        problems++;
+                                    }
+                                    else if(r.StatusCode == System.Net.HttpStatusCode.PreconditionFailed)
+                                    {
+                                        Status = $"Error occurred trying to send email for {curStudentFirst} {curStudentLast}";
+                                        LogIt.LogError(Status);
+                                        problems++;
+                                    }
                                 }
                                 catch (Exception ex)
                                 {
                                     Status = $"Error sending email or updating tables: {ex.Message}";
                                     LogIt.LogError(Status);
+                                    problems++;
                                 }
 
                             }
@@ -293,30 +299,36 @@ namespace EmailPaymentAdvice
 
                         try
                         {
-                            Response r = await SendEmail(apiKey, curStudentFirst, curStudentLast, curStudentEmail, curSchoolContact, curSchoolContactEmail, fromEmail, fromName, textBody, htmlBody);
+                            Response r = await SendEmail(apiKey, curStudentFirst, curStudentLast, curStudentEmail, fromEmail, fromName, curSchoolContact, curSchoolContactEmail, textBody, htmlBody);
                             if (r.StatusCode == System.Net.HttpStatusCode.Accepted && paymentList.Count != 0)
                             {
                                 UpdatePayments(curStudentFirst, curStudentLast, paymentList, DateTime.Now);
                                 UpdateStudent(curStudentFirst, curStudentLast, curStudentID, DateTime.Now);
                                 Status = $"Updated payment records & notes for {curStudentFirst} {curStudentLast}";
                             }
-                            //else if (r.StatusCode == System.Net.HttpStatusCode.PartialContent)
-                            //{
-                            //    Status = $"Missing email for {curStudentFirst} {curStudentLast}";
-                            //}
-                            //else if (r.StatusCode == System.Net.HttpStatusCode.PreconditionFailed)
-                            //{
-                            //    Status = $"Error occurred trying to send email for {curStudentFirst} {curStudentLast}";
-                            //}
+                            else if(r.StatusCode == System.Net.HttpStatusCode.PartialContent)
+                            {
+                                Status = $"Missing email for {curStudentFirst} {curStudentLast}";
+                                LogIt.LogError(Status);
+                                problems++;
+                            }
+                            else if(r.StatusCode == System.Net.HttpStatusCode.PreconditionFailed)
+                            {
+                                Status = $"Error occurred trying to send email for {curStudentFirst} {curStudentLast}";
+                                LogIt.LogError(Status);
+                                problems++;
+                            }
                         }
                         catch (Exception ex)
                         {
                             Status = $"Error sending email or updating tables: {ex.Message}";
                             LogIt.LogError(Status);
+                            problems++;
                         }
 
                     }
-                    Status = $"Processing complete for {school}.";
+                    string errMsg = (problems > 0) ? "errors" : "no errors";
+                    Status = $"Processing complete for {school} with {errMsg}.";
                     LogIt.LogInfo(Status);
                 }
             }
