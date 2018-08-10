@@ -94,25 +94,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_965F3D56521156B4BD592BB43A3ABB3C"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_46529F52419FD45EDCDA33BBEEBC2B1A"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_CC3676DAEFE9DD23453E0007F4BC841E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_7FA6315B81373F8A9545AA8C9E91C331"
+        "OwnerKey" = "8:_CF2B647E773A614DDDFD8297FF851B48"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -124,7 +106,25 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_CF2B647E773A614DDDFD8297FF851B48"
+        "OwnerKey" = "8:_7FA6315B81373F8A9545AA8C9E91C331"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_CC3676DAEFE9DD23453E0007F4BC841E"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_46529F52419FD45EDCDA33BBEEBC2B1A"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_965F3D56521156B4BD592BB43A3ABB3C"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -229,6 +229,11 @@
             "AssemblyAsmDisplayName" = "8:log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_46529F52419FD45EDCDA33BBEEBC2B1A"
+                    {
+                    "Name" = "8:log4net.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:log4net.dll"
             "TargetName" = "8:"
@@ -275,6 +280,11 @@
             "AssemblyAsmDisplayName" = "8:MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_7FA6315B81373F8A9545AA8C9E91C331"
+                    {
+                    "Name" = "8:MySql.Data.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:MySql.Data.dll"
             "TargetName" = "8:"
@@ -321,6 +331,11 @@
             "AssemblyAsmDisplayName" = "8:System.Net.Http, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a"
                 "ScatterAssemblies"
                 {
+                    "_965F3D56521156B4BD592BB43A3ABB3C"
+                    {
+                    "Name" = "8:System.Net.Http.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:System.Net.Http.dll"
             "TargetName" = "8:"
@@ -347,6 +362,11 @@
             "AssemblyAsmDisplayName" = "8:Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_C9B5FF0B7D76C689213C6EBBCA9474DF"
+                    {
+                    "Name" = "8:Newtonsoft.Json.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Newtonsoft.Json.dll"
             "TargetName" = "8:"
@@ -373,6 +393,11 @@
             "AssemblyAsmDisplayName" = "8:Aimm.Logging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_CC3676DAEFE9DD23453E0007F4BC841E"
+                    {
+                    "Name" = "8:Aimm.Logging.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:Aimm.Logging.dll"
             "TargetName" = "8:"
@@ -399,6 +424,11 @@
             "AssemblyAsmDisplayName" = "8:SendGrid, Version=9.8.0.0, Culture=neutral, PublicKeyToken=4f047e93159395ca, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
+                    "_CF2B647E773A614DDDFD8297FF851B48"
+                    {
+                    "Name" = "8:SendGrid.dll"
+                    "Attributes" = "3:512"
+                    }
                 }
             "SourcePath" = "8:SendGrid.dll"
             "TargetName" = "8:"
@@ -486,15 +516,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:EmailPaymentAdvice"
-        "ProductCode" = "8:{DAAF2856-0E0E-417A-9107-A11BF4E3BA5A}"
-        "PackageCode" = "8:{25E7F8E9-8935-499D-AC2D-6F8661FB5C14}"
+        "ProductCode" = "8:{3F1FCF77-6D89-4759-A44A-DC93243851BD}"
+        "PackageCode" = "8:{E81B98B8-E1EE-49C1-8939-4E03E3C670BE}"
         "UpgradeCode" = "8:{5945F11B-EFE0-45F1-AAB1-537F558FBED5}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.1.4"
+        "ProductVersion" = "8:1.1.7"
         "Manufacturer" = "8:RonM"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

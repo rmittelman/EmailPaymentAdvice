@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 [assembly: log4net.Config.XmlConfigurator(Watch = true)]
 namespace Aimm.Logging
@@ -21,13 +22,12 @@ namespace Aimm.Logging
                 return _log;
             }
         }
-
+        
         public static string LogMethod(params object[] parameterValues)
         {
             var stackTrace = new StackTrace();
             StackFrame stackFrame = stackTrace.GetFrame(1);
             string message = "";
-
             ParameterInfo[] parameters = stackFrame.GetMethod().GetParameters();
             var parameterString = new StringBuilder();
             if (parameters.Length == parameterValues.Length)
