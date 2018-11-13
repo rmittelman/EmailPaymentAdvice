@@ -18,12 +18,17 @@ namespace EmailPaymentAdvice
 
 
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
             LogIt.LogInfo("Program starting");
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
+        }
+
+        private static void SetPermissions()
+        {
+            throw new NotImplementedException();
         }
     }
 }

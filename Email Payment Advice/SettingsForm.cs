@@ -19,6 +19,7 @@ namespace EmailPaymentAdvice
     {
         private bool isIDE = (Debugger.IsAttached == true);
         private string sendTo;
+        private string sendParentTo;
         private string bccTo;
         private string tempCCs = "";
         private string errorEmails = "";
@@ -65,6 +66,7 @@ namespace EmailPaymentAdvice
                 originalXml = doc.OuterXml;
 
                 sendTo = GetSetting(doc, "SendTo");
+                sendParentTo = GetSetting(doc, "SendParentTo");
                 tempCCs = GetSetting(doc, "SendCC");
                 bccTo = GetSetting(doc, "SendBCC");
                 errorEmails = GetSetting(doc, "SendErrors");
@@ -98,6 +100,7 @@ namespace EmailPaymentAdvice
             this.txtFromDate.Text = fromDaysAgo.ToString();
             this.txtToDate.Text = toDaysAgo.ToString();
             this.txtToEmail.Text = sendTo;
+            this.txtToParentEmail.Text = sendParentTo;
             this.txtFromEmail.Text = from_email;
             this.txtFromName.Text = from_name;
             this.txtCCs.Text = tempCCs;
@@ -159,6 +162,11 @@ namespace EmailPaymentAdvice
         private void txtToEmail_TextChanged(object sender, EventArgs e)
         {
             bool isOk = SetSetting(doc, "SendTo", txtToEmail.Text);
+        }
+
+        private void txtToParentEmail_TextChanged(object sender, EventArgs e)
+        {
+            bool isOk = SetSetting(doc, "SendParentTo", txtToParentEmail.Text);
         }
 
         private void txtFromEmail_TextChanged(object sender, EventArgs e)
@@ -243,7 +251,8 @@ namespace EmailPaymentAdvice
             string tempSchools = GetSetting(doc, "Schools");
             List<string> selectedSchools = tempSchools.Split(',').ToList<string>();
             for(int i = 0; i < selectedSchools.Count; i++)
-                clbSchools.SetItemChecked(clbSchools.Items.IndexOf(selectedSchools[i]), true);
+                if(selectedSchools[i] != "")
+                    clbSchools.SetItemChecked(clbSchools.Items.IndexOf(selectedSchools[i]), true);
         }
 
         private string GetSetting(XmlDocument doc, string settingName)

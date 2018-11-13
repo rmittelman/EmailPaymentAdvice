@@ -1,13 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Settings>
   <!-- Schools: value=comma-separated list of schools to process by default -->
-  <setting name="Schools" serializeAs="String" value="UAV" />
+  <setting name="Schools" serializeAs="String" value="" />
   <!-- FromDaysAgo: value=number of days prior to current date to START looking for payments by default -->
   <setting name="FromDaysAgo" serializeAs="String" value="12" />
   <!-- ToDaysAgo: value=number of days prior to current date to STOP looking for payments by default -->
   <setting name="ToDaysAgo" serializeAs="int" value="5" />
-  <!-- SendTo: value="{student}" sends email to each student. If valid email address, sends there instead -->
-  <setting name="SendTo" serializeAs="String" value="{student}" />
+  <!-- SendTo: value="{student}" sends email to students. If valid email address, sends there instead -->
+  <setting name="SendTo" serializeAs="String" value="rmittelman@gmail.com" />
+  <!-- SendParentTo: value="{parent}" sends email to parents. If valid email address, sends there instead -->
+  <setting name="SendParentTo" serializeAs="String" value="ron@rgsmm.com" />
   <!-- FromEmail: value="From" email address. {school} is replaced by school's email -->
   <setting name="FromEmail" serializeAs="String" value="NoReply@{school}.edu" />
   <!-- FromName: value="From" email name -->
@@ -16,6 +18,6 @@
   <setting name="SendCC" serializeAs="String" value="" />
   <!-- SendBCC: value=comma-separated list of email addresses to send BCCs to. {school} is replaced by school's email -->
   <setting name="SendBCC" serializeAs="String" value="" />
-  <!-- SendErrors: value=comma-separated list of email addresses to send error notifications to -->
+  <!-- SendErrors: value=comma-separated list of email addresses to send error notifications to {school} is replaced by school's email-->
   <setting name="SendErrors" serializeAs="String" value="" />
 </Settings>

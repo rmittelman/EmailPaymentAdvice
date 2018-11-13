@@ -199,6 +199,20 @@
     {
         "CustomAction"
         {
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_1F80D4AB40BC4408BD59D5A848022C8F"
+            {
+            "Name" = "8:Primary output from EmailPaymentAdvice (Active)"
+            "Condition" = "8:"
+            "Object" = "8:_2E74B289CBA345FCB32D6D51384BA214"
+            "FileType" = "3:2"
+            "InstallAction" = "3:1"
+            "Arguments" = "8:Install"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_A6B0BAE4_0066_427D_BD17_75A29FFC2DCE"
+            "InstallerClass" = "11:FALSE"
+            "CustomActionData" = "8:"
+            }
         }
         "DefaultFeature"
         {
@@ -516,15 +530,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:EmailPaymentAdvice"
-        "ProductCode" = "8:{3F1FCF77-6D89-4759-A44A-DC93243851BD}"
-        "PackageCode" = "8:{E81B98B8-E1EE-49C1-8939-4E03E3C670BE}"
+        "ProductCode" = "8:{D2E724F8-3AD5-498B-90D2-5E3BE85464BC}"
+        "PackageCode" = "8:{DA87F405-C783-4765-A099-59A80853B06E}"
         "UpgradeCode" = "8:{5945F11B-EFE0-45F1-AAB1-537F558FBED5}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.1.7"
+        "ProductVersion" = "8:1.2.1"
         "Manufacturer" = "8:RonM"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
