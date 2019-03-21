@@ -99,12 +99,10 @@ namespace EmailPaymentAdvice
 
         private string text_error_body = "Dear EmailPaymentAdvice Administrator,\n\nThe following errors have occurred "
                     + "while processing emails for {0}:\n\n{1}\n\n"
-                    + "For further details, please review the log file at \"M:\\EmailPaymentAdvice\\Logs\\App.log\".\n\n"
                     + "Please do not reply to this email because this email box is not monitored.";
 
         private string html_error_body = "<p>Dear EmailPaymentAdvice Administrator,</p><p>The following errors have occurred "
                     + "while processing emails for {0}:</p><p><pre>{1}</pre></p>"
-                    + "<p>For further details, please review the log file at <strong>M:\\EmailPaymentAdvice\\Logs\\App.log</strong>.</p>"
                     + "<p>Please do not reply to this email because this email box is not monitored.</p>";
         #endregion
 
@@ -166,66 +164,50 @@ namespace EmailPaymentAdvice
             }
 
             // read settings
-            try
+            if(GetSettings())
             {
-                doc = new ConfigXmlDocument();
-                doc.Load(settingsFile);
-                sendTo = GetSetting(doc, "SendTo");
-                sendParentTo = GetSetting(doc, "SendParentTo");
 
-                var tempCCs = GetSetting(doc, "SendCC");
-                if(tempCCs != "")
-                    CCsTo = tempCCs.Split(',').ToList<string>();
+                try
+                {
+                    // get api key from file
+                    string apiKeyFile = Path.Combine(settingsPath, "SendgridAPIKey.txt");
+                    apiKey = File.ReadAllText(apiKeyFile);
+                }
+                catch(Exception ex)
+                {
+                    Status = $"Error getting API key: {ex.Message}";
+                    LogIt.LogError(Status);
+                }
 
-                var tempBCCs = GetSetting(doc, "SendBCC");
-                if(tempBCCs != "")
-                    BCCsTo = tempBCCs.Split(',').ToList<string>();
+                fromDate = DateTime.Today.AddDays(-fromDaysAgo);
+                dtpFromDate.Value = fromDate;
 
-                var tempERRs = GetSetting(doc, "SendErrors");
-                if(tempERRs != "")
-                    ERRsTo = tempERRs.Split(',').ToList<string>();
+                toDate = DateTime.Today.AddDays(-toDaysAgo);
+                dtpToDate.Value = toDate;
 
-                var tempFromDaysAgo = GetSetting(doc, "FromDaysAgo");
-                if(!int.TryParse(tempFromDaysAgo, out fromDaysAgo))
-                    fromDaysAgo = 12;
+                LogIt.LogInfo($"Got beginning and ending dates from settings file: FromDate={fromDate.ToShortDateString()}, ToDate={toDate.ToShortDateString()}");
 
-                var tempToDaysAgo = GetSetting(doc, "ToDaysAgo");
-                if(!int.TryParse(tempToDaysAgo, out toDaysAgo))
-                    toDaysAgo = 5;
+                // load the schools list
+                DataSet ds = GetAllSchools();
+                List<string> allSchools = new List<string>();
+                foreach(DataRow row in ds.Tables[0].Rows)
+                    allSchools.Add(row.ItemArray[0].ToString());
+                clbSchools.DataSource = allSchools;
 
-                from_email = GetSetting(doc, "FromEmail");
-                from_name = GetSetting(doc, "FromName");
+                // check the default items
+                CheckSelectedSchools();
 
-                // get api key from file
-                string apiKeyFile = Path.Combine(settingsPath, "SendgridAPIKey.txt");
-                apiKey = File.ReadAllText(apiKeyFile);
+                this.btnPreview.Enabled = true;
+                this.btnProcess.Enabled = true;
+
+                if(isAutoRun)
+                    btnProcess_Click(btnProcess, null);
             }
-            catch(Exception ex)
+            else
             {
-                Status = $"Error getting application settings: {ex.Message}";
-                LogIt.LogError(Status);
+                this.btnPreview.Enabled = false;
+                this.btnProcess.Enabled = false;
             }
-
-            fromDate = DateTime.Today.AddDays(-fromDaysAgo);
-            dtpFromDate.Value = fromDate;
-
-            toDate = DateTime.Today.AddDays(-toDaysAgo);
-            dtpToDate.Value = toDate;
-
-            LogIt.LogInfo($"Got beginning and ending dates from settings file: FromDate={fromDate.ToShortDateString()}, ToDate={toDate.ToShortDateString()}");
-
-            // load the schools list
-            DataSet ds = GetAllSchools();
-            List<string> allSchools = new List<string>();
-            foreach(DataRow row in ds.Tables[0].Rows)
-                allSchools.Add(row.ItemArray[0].ToString());
-            clbSchools.DataSource = allSchools;
-
-            // check the default items
-            CheckSelectedSchools();
-
-            if(isAutoRun)
-                btnProcess_Click(btnProcess, null);
         }
 
         private void dtpFromDate_ValueChanged(object sender, EventArgs e)
@@ -255,7 +237,25 @@ namespace EmailPaymentAdvice
             sf.StartPosition = FormStartPosition.CenterParent;
             sf.ShowDialog();
             doc.Load(settingsFile);
-            CheckSelectedSchools();
+            if(GetSettings())
+            {
+                fromDate = DateTime.Today.AddDays(-fromDaysAgo);
+                dtpFromDate.Value = fromDate;
+
+                toDate = DateTime.Today.AddDays(-toDaysAgo);
+                dtpToDate.Value = toDate;
+
+                LogIt.LogInfo($"Got beginning and ending dates from settings file: FromDate={fromDate.ToShortDateString()}, ToDate={toDate.ToShortDateString()}");
+
+                CheckSelectedSchools();
+                this.btnPreview.Enabled = true;
+                this.btnProcess.Enabled = true;
+            }
+            else
+            {
+                this.btnPreview.Enabled = false;
+                this.btnProcess.Enabled = false;
+            }
         }
 
         #endregion
@@ -272,7 +272,7 @@ namespace EmailPaymentAdvice
                 // get file info and add write, modify permissions
                 FileInfo fi = new FileInfo(settingsFile);
                 FileSecurity fs = fi.GetAccessControl();
-                FileSystemAccessRule fsar = 
+                FileSystemAccessRule fsar =
                     new FileSystemAccessRule(sid, FileSystemRights.FullControl, InheritanceFlags.None, PropagationFlags.None, AccessControlType.Allow);
 
                 fs.AddAccessRule(fsar);
@@ -348,6 +348,10 @@ namespace EmailPaymentAdvice
                                         Response r = await SendEmail(apiKey, curStudentFirst, curStudentLast, curStudentEmail, false, fromEmail, fromName, curSchoolContact, curSchoolCcEmail, textBody, htmlBody);
                                         if(r.StatusCode == System.Net.HttpStatusCode.Accepted && paymentList.Count != 0)
                                         {
+                                            status = $"  Sent email to {curStudentFirst} {curStudentLast} <{curStudentEmail}>, result={r.StatusCode.ToString()}";
+                                            LogIt.LogInfo(status);
+                                            Status += Environment.NewLine + "  " + status;
+
                                             UpdatePayments(curStudentFirst, curStudentLast, paymentList, DateTime.Now);
                                             UpdateStudent(curStudentFirst, curStudentLast, curStudentID, DateTime.Now);
                                             status = $"Updated payment records & notes for {school} student {curStudentFirst} {curStudentLast}";
@@ -364,7 +368,7 @@ namespace EmailPaymentAdvice
                                         }
                                         else if(r.StatusCode == System.Net.HttpStatusCode.PreconditionFailed)
                                         {
-                                            status = $"Error occurred trying to send email for {school} student {curStudentFirst} {curStudentLast}";
+                                            status = $"Error occurred trying to send email for {school} student {curStudentFirst} {curStudentLast}: {msg}";
                                             errorList.Add(status);
                                             LogIt.LogError(status);
                                             Status += Environment.NewLine + "  " + status;
@@ -392,6 +396,10 @@ namespace EmailPaymentAdvice
                                             Response r = await SendEmail(apiKey, curStudentFirst, curStudentLast, curParentEmail, true, fromEmail, fromName, curSchoolContact, curSchoolCcEmail, textBody, htmlBody);
                                             if(r.StatusCode == System.Net.HttpStatusCode.Accepted && paymentList.Count != 0)
                                             {
+                                                status = $"  Sent email to parent of {curStudentFirst} {curStudentLast} <{curParentEmail}>, result={r.StatusCode.ToString()}";
+                                                LogIt.LogInfo(status);
+                                                Status += Environment.NewLine + "  " + status;
+
                                                 UpdateStudent(curStudentFirst, curStudentLast, curStudentID, DateTime.Now, true);
                                                 status = $"Updated notes for {school} student {curStudentFirst} {curStudentLast}";
                                                 LogIt.LogInfo(status);
@@ -407,7 +415,7 @@ namespace EmailPaymentAdvice
                                             }
                                             else if(r.StatusCode == System.Net.HttpStatusCode.PreconditionFailed)
                                             {
-                                                status = $"Error occurred trying to send email for parent(s) of {school} student {curStudentFirst} {curStudentLast}";
+                                                status = $"Error occurred trying to send email for parent(s) of {school} student {curStudentFirst} {curStudentLast}: {msg}";
                                                 errorList.Add(status);
                                                 LogIt.LogError(status);
                                                 Status += Environment.NewLine + "  " + status;
@@ -471,6 +479,10 @@ namespace EmailPaymentAdvice
                                 Response r = await SendEmail(apiKey, curStudentFirst, curStudentLast, curStudentEmail, false, fromEmail, fromName, curSchoolContact, curSchoolCcEmail, textBody, htmlBody);
                                 if(r.StatusCode == System.Net.HttpStatusCode.Accepted && paymentList.Count != 0)
                                 {
+                                    status = $"  Sent email to {curStudentFirst} {curStudentLast} <{curStudentEmail}>, result={r.StatusCode.ToString()}";
+                                    LogIt.LogInfo(status);
+                                    Status += Environment.NewLine + "  " + status;
+
                                     UpdatePayments(curStudentFirst, curStudentLast, paymentList, DateTime.Now);
                                     UpdateStudent(curStudentFirst, curStudentLast, curStudentID, DateTime.Now);
                                     status = $"Updated payment records & notes for student {curStudentFirst} {curStudentLast}";
@@ -487,7 +499,7 @@ namespace EmailPaymentAdvice
                                 }
                                 else if(r.StatusCode == System.Net.HttpStatusCode.PreconditionFailed)
                                 {
-                                    status = $"Error occurred trying to send email for {school} student {curStudentFirst} {curStudentLast}";
+                                    status = $"Error occurred trying to send email for {school} student {curStudentFirst} {curStudentLast}: {msg}";
                                     errorList.Add(status);
                                     LogIt.LogError(status);
                                     Status += Environment.NewLine + "  " + status;
@@ -515,6 +527,10 @@ namespace EmailPaymentAdvice
                                     Response r = await SendEmail(apiKey, curStudentFirst, curStudentLast, curParentEmail, true, fromEmail, fromName, curSchoolContact, curSchoolCcEmail, textBody, htmlBody);
                                     if(r.StatusCode == System.Net.HttpStatusCode.Accepted && paymentList.Count != 0)
                                     {
+                                        status = $"  Sent email to parent of {curStudentFirst} {curStudentLast} <{curParentEmail}>, result={r.StatusCode.ToString()}";
+                                        LogIt.LogInfo(status);
+                                        Status += Environment.NewLine + "  " + status;
+
                                         UpdateStudent(curStudentFirst, curStudentLast, curStudentID, DateTime.Now, true);
                                         status = $"Updated notes for {school} student {curStudentFirst} {curStudentLast}";
                                         LogIt.LogInfo(status);
@@ -530,7 +546,7 @@ namespace EmailPaymentAdvice
                                     }
                                     else if(r.StatusCode == System.Net.HttpStatusCode.PreconditionFailed)
                                     {
-                                        status = $"Error occurred trying to send email for parent(s) of {school} student {curStudentFirst} {curStudentLast}";
+                                        status = $"Error occurred trying to send email for parent(s) of {school} student {curStudentFirst} {curStudentLast}: {msg}";
                                         errorList.Add(status);
                                         LogIt.LogError(status);
                                         Status += Environment.NewLine + "  " + status;
@@ -563,7 +579,7 @@ namespace EmailPaymentAdvice
                                 Response r = await SendErrorEmail(apiKey, ERRsTo, errorList, curSchoolContact, curSchoolErrorEmail, textBody, htmlBody);
                                 if(r.StatusCode == System.Net.HttpStatusCode.Accepted)
                                 {
-                                    status = $"Sent error email(s) for {school}";
+                                    status = $"Sent error email(s) for {school} to {ERRsTo}, result={r.StatusCode.ToString()}";
                                     LogIt.LogInfo(status);
                                     Status += Environment.NewLine + "  " + status;
                                 }
@@ -575,7 +591,7 @@ namespace EmailPaymentAdvice
                                 }
                                 else if(r.StatusCode == System.Net.HttpStatusCode.PreconditionFailed)
                                 {
-                                    status = $"Error occurred trying to send error email(s) for {school}";
+                                    status = $"Error occurred trying to send error email(s) for {school}: {msg}";
                                     LogIt.LogError(status);
                                     Status += Environment.NewLine + "  " + status;
                                 }
@@ -608,7 +624,6 @@ namespace EmailPaymentAdvice
             sb.Append(row[tbl.Columns["Amount"]].ToString());
         }
 
-
         delegate void StringArgReturningVoidDelegate(string status);
         private void ShowStatus(string status)
         {
@@ -623,6 +638,8 @@ namespace EmailPaymentAdvice
             else
             {
                 txtStatus.Text = status;
+                txtStatus.SelectionStart = txtStatus.TextLength;
+                txtStatus.ScrollToCaret();
             }
         }
 
@@ -638,6 +655,48 @@ namespace EmailPaymentAdvice
             for(int i = 0; i < selectedSchools.Count; i++)
                 if(selectedSchools[i] != "")
                     clbSchools.SetItemChecked(clbSchools.Items.IndexOf(selectedSchools[i]), true);
+        }
+
+        private bool GetSettings()
+        {
+            try
+            {
+                doc = new ConfigXmlDocument();
+                doc.Load(settingsFile);
+                sendTo = GetSetting(doc, "SendTo");
+                sendParentTo = GetSetting(doc, "SendParentTo");
+
+                var tempCCs = GetSetting(doc, "SendCC");
+                if(tempCCs != "")
+                    CCsTo = tempCCs.Split(',').ToList<string>();
+
+                var tempBCCs = GetSetting(doc, "SendBCC");
+                if(tempBCCs != "")
+                    BCCsTo = tempBCCs.Split(',').ToList<string>();
+
+                var tempERRs = GetSetting(doc, "SendErrors");
+                if(tempERRs != "")
+                    ERRsTo = tempERRs.Split(',').ToList<string>();
+
+                var tempFromDaysAgo = GetSetting(doc, "FromDaysAgo");
+                if(!int.TryParse(tempFromDaysAgo, out fromDaysAgo))
+                    fromDaysAgo = 12;
+
+                var tempToDaysAgo = GetSetting(doc, "ToDaysAgo");
+                if(!int.TryParse(tempToDaysAgo, out toDaysAgo))
+                    toDaysAgo = 5;
+
+                from_email = GetSetting(doc, "FromEmail");
+                from_name = GetSetting(doc, "FromName");
+                return true;
+            }
+            catch(Exception ex)
+            {
+                Status = $"Error getting application settings: {ex.Message}";
+                LogIt.LogError(Status);
+                return false;
+            }
+
         }
 
         private string GetSetting(XmlDocument doc, string settingName)
@@ -766,7 +825,7 @@ namespace EmailPaymentAdvice
             return ds;
         }
 
-        private async Task<Response> SendEmail(string apiKey, string studFirst, string studLast, string emailAddress, bool isParent, string fromEmail, string fromName, 
+        private async Task<Response> SendEmail(string apiKey, string studFirst, string studLast, string emailAddress, bool isParent, string fromEmail, string fromName,
                                                string schoolContact, string schoolEmail, string txtBody, string htmBody)
         {
             return await Task<Response>.Run(async () =>
@@ -776,6 +835,7 @@ namespace EmailPaymentAdvice
                  var from = new EmailAddress(fromEmail, fromName);
                  var subject = "Financial Aid Awarded";
                  var toName = (isParent ? "Parent(s) of " : "") + $"{studFirst} {studLast}";
+
                  EmailAddress to;
                  if(isParent)
                      to = new EmailAddress(sendParentTo == "{parent}" ? emailAddress : sendParentTo, toName);
@@ -786,16 +846,13 @@ namespace EmailPaymentAdvice
 
                  if(to.Email == "")
                  {
-                     status = "Missing email for " + (emailAddress == curParentEmail ? "Parent(s) of " : "") + $"{fromName} student {studFirst} {studLast}";
-                     errorList.Add(status);
-                     LogIt.LogError(status);
-                     Status += Environment.NewLine + "  " + status;
                  }
                  else
                  {
+                     List<string> schoolEmails = schoolEmail.Split(',').ToList<string>();
                      try
                      {
-                         var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+                         var sgMsg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
 
                          // add any CCs from settings
                          if(CCsTo.Count > 0)
@@ -804,11 +861,16 @@ namespace EmailPaymentAdvice
                              foreach(var cc in CCsTo)
                              {
                                  if(cc == "{school}")
-                                     ccList.Add(new EmailAddress(schoolEmail, schoolContact));
+                                 {
+                                     foreach(var email in schoolEmails)
+                                     {
+                                         ccList.Add(new EmailAddress(email, "Financial Aid Department"));
+                                     }
+                                 }
                                  else
                                      ccList.Add(new EmailAddress(cc, "EmailPaymentAdvice Administrator"));
                              }
-                             msg.AddCcs(ccList);
+                             sgMsg.AddCcs(ccList);
                          }
 
                          // add any BCCs from settings
@@ -818,23 +880,22 @@ namespace EmailPaymentAdvice
                              foreach(var bcc in BCCsTo)
                              {
                                  if(bcc == "{school}")
-                                     bccList.Add(new EmailAddress(schoolEmail, schoolContact));
+                                 {
+                                     foreach(var email in schoolEmails)
+                                     {
+                                         bccList.Add(new EmailAddress(email, "Financial Aid Department"));
+                                     }
+                                 }
                                  else
                                      bccList.Add(new EmailAddress(bcc, "EmailPaymentAdvice Administrator"));
                              }
-                             msg.AddBccs(bccList);
+                             sgMsg.AddBccs(bccList);
                          }
-                         resp = await client.SendEmailAsync(msg);
-
-                         status = $"  Sent email to {to.Name} <{to.Email}>, result={resp.StatusCode.ToString()}";
-                         LogIt.LogInfo(status);
-                         Status += Environment.NewLine + "  " + status;
+                         resp = await client.SendEmailAsync(sgMsg);
                      }
                      catch(Exception ex)
                      {
-                         status = $"Could not send email: {ex.Message}";
-                         LogIt.LogError(status);
-                         Status += Environment.NewLine + "  " + status;
+                         msg = ex.Message;
                          resp.StatusCode = System.Net.HttpStatusCode.PreconditionFailed;
                      }
                  }
@@ -842,7 +903,7 @@ namespace EmailPaymentAdvice
              });
         }
 
-        private async Task<Response> SendErrorEmail(string apiKey, List<string> ERRsTo, List<string> errorList, string schoolContact, string schoolErrorEmail, 
+        private async Task<Response> SendErrorEmail(string apiKey, List<string> ERRsTo, List<string> errorList, string schoolContact, string schoolErrorEmail,
                                                     string txtBody, string htmBody)
         {
             return await Task<Response>.Run(async () =>
@@ -850,45 +911,56 @@ namespace EmailPaymentAdvice
                 Response resp = new Response(System.Net.HttpStatusCode.PartialContent, null, null);
                 var client = new SendGridClient(apiKey);
                 var from = new EmailAddress("Info@ShamrocksFA.com", "EmailPaymentAdvice");
-                var subject = "Errors Occurred";
-                var toName = ERRsTo[0] == "{school}" ? schoolContact : "EmailPaymentAdvice Administrator";
-                var toEmail = ERRsTo[0] == "{school}" ? schoolErrorEmail : ERRsTo[0];
-                var to = new EmailAddress(toEmail, toName);
+                var subject = "Errors Sending Payment Advice Emails";
+
+                // create new list of emails & names, and resolve {school} emails
+                List<string> emails = new List<string>();
+                List<string> emailNames = new List<string>();
+                List<string> schoolEmails = schoolErrorEmail.Split(',').ToList<string>();
+                foreach(var errTo in ERRsTo)
+                {
+                    if(errTo == "{school}")
+                    {
+                        foreach(var schoolEmail in schoolEmails)
+                        {
+                            emails.Add(schoolEmail);
+                            emailNames.Add("Financial Aid Department");
+                        }
+                    }
+                    else
+                    {
+                        emails.Add(errTo);
+                        emailNames.Add("EmailPaymentAdvice Administrator");
+                    }
+                }
+
                 var plainTextContent = txtBody;
                 var htmlContent = htmBody;
 
-                // delete first address, we already used that
-                ERRsTo.RemoveAt(0);
+                // get TO email address from first item in lists, then remove from lists
+                var to = new EmailAddress(emails[0], emailNames[0]);
+                emails.RemoveAt(0);
+                emailNames.RemoveAt(0);
 
                 try
                 {
+                    // create email & add any remaining email addresses as CCs
                     var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
-
-                    // add any emails remaining as CCs
-                    if(ERRsTo.Count > 0)
+                    if(emails.Count > 0)
                     {
                         var ccList = new List<EmailAddress>();
-                        foreach(var cc in ERRsTo)
+                        for(int i = 0; i < emails.Count; i++)
                         {
-                            if(cc == "{school}")
-                                ccList.Add(new EmailAddress(schoolErrorEmail, schoolContact));
-                            else
-                                ccList.Add(new EmailAddress(cc, "EmailPaymentAdvice Administrator"));
+                            ccList.Add(new EmailAddress(emails[i], emailNames[i]));
                         }
                         msg.AddCcs(ccList);
                     }
 
                     resp = await client.SendEmailAsync(msg);
-
-                    status = $"Sent email to {to.Name} <{to.Email}>, result={resp.StatusCode.ToString()}";
-                    LogIt.LogInfo(status);
-                    Status += Environment.NewLine + "  " + status;
                 }
                 catch(Exception ex)
                 {
-                    status = $"Could not send email: {ex.Message}";
-                    LogIt.LogError(status);
-                    Status += Environment.NewLine + "  " + status;
+                    msg = ex.Message;
                     resp.StatusCode = System.Net.HttpStatusCode.PreconditionFailed;
                 }
 

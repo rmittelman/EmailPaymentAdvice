@@ -1,23 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Settings>
   <!-- Schools: value=comma-separated list of schools to process by default -->
-  <setting name="Schools" serializeAs="String" value="" />
+  <setting name="Schools" serializeAs="String" value="CBD,VCMC,Mayfield,MACC,CCSCE,PIOB" />
   <!-- FromDaysAgo: value=number of days prior to current date to START looking for payments by default -->
-  <setting name="FromDaysAgo" serializeAs="String" value="12" />
+  <setting name="FromDaysAgo" serializeAs="String" value="2" />
   <!-- ToDaysAgo: value=number of days prior to current date to STOP looking for payments by default -->
-  <setting name="ToDaysAgo" serializeAs="int" value="5" />
+  <setting name="ToDaysAgo" serializeAs="int" value="2" />
   <!-- SendTo: value="{student}" sends email to students. If valid email address, sends there instead -->
   <setting name="SendTo" serializeAs="String" value="rmittelman@gmail.com" />
   <!-- SendParentTo: value="{parent}" sends email to parents. If valid email address, sends there instead -->
-  <setting name="SendParentTo" serializeAs="String" value="ron@rgsmm.com" />
+  <setting name="SendParentTo" serializeAs="String" value="{parent}" />
   <!-- FromEmail: value="From" email address. {school} is replaced by school's email -->
   <setting name="FromEmail" serializeAs="String" value="NoReply@{school}.edu" />
   <!-- FromName: value="From" email name -->
   <setting name="FromName" serializeAs="String" value="{school}" />
   <!-- SendCC: value=comma-separated list of email addresses to send CCs to. {school} is replaced by school's email -->
-  <setting name="SendCC" serializeAs="String" value="" />
+  <setting name="SendCC" serializeAs="String" value="{school}" />
   <!-- SendBCC: value=comma-separated list of email addresses to send BCCs to. {school} is replaced by school's email -->
   <setting name="SendBCC" serializeAs="String" value="" />
   <!-- SendErrors: value=comma-separated list of email addresses to send error notifications to {school} is replaced by school's email-->
-  <setting name="SendErrors" serializeAs="String" value="" />
+  <setting name="SendErrors" serializeAs="String" value="{school},derek@shamrocksfa.com,nick@shamrocksfa.com,rmittelman@gmail.com" />
 </Settings>

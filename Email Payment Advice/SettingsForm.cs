@@ -147,6 +147,7 @@ namespace EmailPaymentAdvice
         {
             doc.Save(settingsFile);
             originalXml = doc.OuterXml;
+            this.Close();
         }
 
         private void txtFromDate_TextChanged(object sender, EventArgs e)
